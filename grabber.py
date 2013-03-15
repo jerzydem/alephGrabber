@@ -25,7 +25,7 @@ def create_pdf_list(listFile):
 				outfile.write(line[0]+ ' ' + line[2].replace('.','_').replace(' ','_') + '\n')							
 
 		print(res)
-		bookNum+=600
+		bookNum+=10
 
 	outfile.close()
 
