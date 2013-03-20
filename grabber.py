@@ -6,7 +6,7 @@ pdfListFile = 'pdf_files.txt'
 
 
 def create_pdf_list(listFile):
-  outfile = open(listFile, 'w')
+	outfile = open(listFile, 'w')
 	http = urllib3.PoolManager()
 	adr = 'http://statlibr.stat.gov.pl/F/RCTMPHT6L17LTF6V1EQ58BTTDJMVUG6UF4N342RJY3F6HGNRUU-22024?func=short-jump&jump=000'
 
@@ -30,18 +30,22 @@ def create_pdf_list(listFile):
 	outfile.close()
 
 def download_single_pdf(http, url, title):
-	print(url)	
+#	http1 = urllib3.PoolManager()
+#	http2 = urllib3.PoolManager()
+	
+#	pdb.set_trace()
 
 	r = http.request('GET', 'http://statlibr.stat.gov.pl' + url)
 	r.status
 	r.headers['server']
+#	pdb.set_trace()
 	adr = search('''<body onLoad=window.location="{}">''', r.data)
-	pdfurl = 'http://statlibr.stat.gov.pl' + adr[0]
-
-	r = http.request('GET', pdfurl)
-
-	with open("pdf/"+title+".pdf", "wb") as file:
-	    file.write(r.data)
+	if(adr):
+		pdfURL = 'http://statlibr.stat.gov.pl' + adr[0]
+		print(pdfURL)
+		r = http.request('GET', pdfURL)
+		with open("pdf/"+title.replace('/','_')+".pdf", "wb") as file:
+		    file.write(r.data)
 
 def dwnFiles(listFile, httpMng):
 	srcFile = open(listFile, 'r')
@@ -56,6 +60,7 @@ def dwnFiles(listFile, httpMng):
 #create_pdf_list(pdfListFile)
 #download_single_pdf( httpManager, exurl, "title1")
 dwnFiles(pdfListFile, httpManager)
+
 
 
 
